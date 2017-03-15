@@ -6,16 +6,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.arlen.frame.R;
-import com.arlen.frame.common.base.BaseActivity;
+import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.base.BasePresenterActivity;
 import com.arlen.frame.common.thirdsdk.map.LocalListener;
 import com.arlen.frame.common.thirdsdk.map.RequestLocalClient;
 import com.arlen.frame.common.utils.ImageUtil;
-import com.arlen.frame.view.AppContext;
 import com.arlen.frame.view.account.model.Account;
 import com.arlen.frame.view.account.presenter.UserPresenter;
 import com.baidu.location.BDLocation;
 
-public class MainActivity extends BaseActivity<IUserView,UserPresenter> implements IUserView{
+public class MainActivity extends BasePresenterActivity<IUserView,UserPresenter> implements IUserView{
 
     private long mBackPressed;
 
@@ -23,7 +23,7 @@ public class MainActivity extends BaseActivity<IUserView,UserPresenter> implemen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentViewAll(R.layout.activity_main);
+        setBaseAndContentView(R.layout.activity_main);
         getPresenter().loadAccount();
         new RequestLocalClient(this,new LocalListener() {
             @Override
@@ -38,9 +38,8 @@ public class MainActivity extends BaseActivity<IUserView,UserPresenter> implemen
         return new UserPresenter();
     }
 
-    @Override
     public void initActivity() {
-        setHeaderTitle("用户中心");
+        getTitleBar().setHeaderTitle("用户中心");
         mIvImage = (ImageView) findViewById(R.id.iv_image);
     }
 

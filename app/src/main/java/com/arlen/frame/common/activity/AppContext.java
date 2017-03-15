@@ -1,9 +1,8 @@
-package com.arlen.frame.view;
+package com.arlen.frame.common.activity;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.arlen.frame.common.activity.ActivityManager;
 import com.arlen.frame.common.thirdsdk.jpush.JPushOperator;
 import com.arlen.frame.common.utils.OsUtils;
 import com.baidu.mapapi.SDKInitializer;

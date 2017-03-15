@@ -9,7 +9,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.arlen.frame.view.AppContext;
+import com.arlen.frame.common.activity.AppContext;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class TinyDB {
 		setPreferences(tinyName);
 	}
 
-	public TinyDB getInstance(){
+	public static TinyDB getInstance(){
 		if(mInstance == null){
 			synchronized (TinyDB.class){
 				if(mInstance == null){

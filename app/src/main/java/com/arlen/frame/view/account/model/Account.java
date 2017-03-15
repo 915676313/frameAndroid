@@ -1,11 +1,13 @@
 package com.arlen.frame.view.account.model;
 
+import com.arlen.frame.common.model.BaseResult;
+
 import java.io.Serializable;
 
 /**
  * Created by Arlen on 2016/12/21 18:22.
  */
-public class Account implements Serializable {
+public class Account extends BaseResult implements Serializable {
         private static final long serialVersionUID = 1L;
     private  float balance = -1f;
     private  int points = -1;

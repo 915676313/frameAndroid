@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:nav="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cl_1f"
+    android:orientation="vertical">
+
+    <com.arlen.frame.common.view.NavBarHeader
+        android:id="@+id/nav_bar_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        nav:backgroundColor="@color/cl_ff"
+        nav:isShowLine="true"
+        nav:lineColor="@color/cl_cc"
+        nav:titleColor="@color/cl_26"
+        nav:titleText="" />
+
+    <com.arlen.frame.common.view.StatusLayout
+        android:id="@+id/sl_base"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

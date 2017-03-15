@@ -1,7 +1,7 @@
 package com.arlen.frame.view.account.presenter;
 
 import com.arlen.frame.common.base.BasePresenter;
-import com.arlen.frame.common.net.ReqDataCallBack;
+import com.arlen.frame.common.net.BasePresenterSubscriber;
 import com.arlen.frame.view.account.model.Account;
 import com.arlen.frame.view.account.service.UserService;
 import com.arlen.frame.view.account.view.IUserView;
@@ -13,18 +13,11 @@ public class UserPresenter extends BasePresenter<IUserView> implements IUserPres
 
     @Override
     public void loadAccount() {
-        setObservable(createService(UserService.class).loadAccountSummary(),new ReqDataCallBack<Account>(){
+        setObservable(createService(UserService.class).loadAccountSummary(),new BasePresenterSubscriber<Account>(getView(),true){
             @Override
             public void onNext(Account account) {
                 super.onNext(account);
-                if(isAttachView()) {
-                    getView().showContentView(account);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
+                getView().showContentView(account);
             }
         });
     }

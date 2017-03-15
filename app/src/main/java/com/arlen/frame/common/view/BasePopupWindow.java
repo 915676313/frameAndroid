@@ -1,4 +1,4 @@
-package com.arlen.frame.common.base;
+package com.arlen.frame.common.view;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;

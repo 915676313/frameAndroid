@@ -1,4 +1,27 @@
 <resources>
     <string name="app_name">frameAndroid</string>
     <string name="quit_app_text">再按一次退出程序</string>
+    <string name="no_more">没有更多</string>
+    <string name="from_photo">从相册选择</string>
+    <string name="enter">确定</string>
+    <string name="cancel">取消</string>
+    <string name="take_photo">拍照</string>
+
+    <!--net-->
+    <string name="no_network">网络无法连接</string>
+    <string name="connect_time_out">网络连接异常，请确认连接后重试</string>
+    <string name="socket_time_out">连接超时</string>
+    <string name="http_time_out">网络错误</string>
+    <string name="unknown_time_out">未知域名</string>
+    <string name="json_time_out">Json解析错误</string>
+    <string name="custom_time_out">错误:</string>
+    <string name="empty_text">无数据</string>
+    <string name="reload_text">重新加载</string>
+    <string name="loading">加载中...</string>
+
+    <!--permission-->
+    <string name="no_storage">内存卡不存在</string>
+    <string name="select_error">选择图片文件出错</string>
+    <string name="no_store_permission">请在设置中开启存储权限</string>
+    <string name="no_camera_permission">请在设置中开启存储权限</string>
 </resources>

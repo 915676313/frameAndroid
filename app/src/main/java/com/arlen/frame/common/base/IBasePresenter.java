@@ -13,6 +13,4 @@ public interface IBasePresenter<T> {
     void onResume();
     //获得view
     T getView();
-    //判断view是否被销毁
-    boolean isAttachView();
 }

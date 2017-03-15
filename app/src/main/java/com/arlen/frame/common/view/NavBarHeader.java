@@ -2,6 +2,8 @@ package com.arlen.frame.common.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,12 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arlen.frame.R;
-import com.arlen.frame.common.activity.ActivityManager;
+
 
 /**
  * Created by Arlen on 2016/12/23 16:02.
  */
-public class NavBarHeader extends LinearLayout{
+public class NavBarHeader extends LinearLayout {
+
+    private Context mContext;
     private LayoutInflater mInflater;
 
     private String mTitle;
@@ -44,23 +48,25 @@ public class NavBarHeader extends LinearLayout{
         init(context,attrs);
     }
 
-    private void init(Context context,AttributeSet attrs){
+    private void init(Context context, AttributeSet attrs){
+        mContext = context;
         initView(context);
         initStyleable(context,attrs);
     }
 
-    private void initStyleable(Context context,AttributeSet attrs){
+    private void initStyleable(Context context, AttributeSet attrs){
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.NavBar,0,0);
         mTitle = typedArray.getString(R.styleable.NavBar_titleText);
         mRightText = typedArray.getString(R.styleable.NavBar_rightText);
         mRightIcon = typedArray.getResourceId(R.styleable.NavBar_rightIcon,0);
         mBackIcon = typedArray.getResourceId(R.styleable.NavBar_backIcon,R.mipmap.ic_action_back);
-        mTitleColor = typedArray.getColor(R.styleable.NavBar_titleColor,getResources().getColor(R.color.cl_26));
-        mRightTextColor=typedArray.getColor(R.styleable.NavBar_rightTextColor,getResources().getColor(R.color.cl_e2));
+        mTitleColor = typedArray.getColor(R.styleable.NavBar_titleColor,getResources().getColor(R.color.cl_33));
+        mRightTextColor=typedArray.getColor(R.styleable.NavBar_rightTextColor,getResources().getColor(R.color.cl_89));
         mBackgroundColor = typedArray.getColor(R.styleable.NavBar_backgroundColor,getResources().getColor(R.color.cl_ff));
-        mLineColor = typedArray.getColor(R.styleable.NavBar_lineColor,getResources().getColor(R.color.line));
+        mLineColor = typedArray.getColor(R.styleable.NavBar_lineColor,getResources().getColor(R.color.cl_cc));
         mIsShowLine = typedArray.getBoolean(R.styleable.NavBar_isShowLine,true);
+        typedArray.recycle();
         initStyleableData();
     }
 
@@ -79,7 +85,7 @@ public class NavBarHeader extends LinearLayout{
     private void initView(Context context){
         mInflater = LayoutInflater.from(context);
         View view = mInflater.inflate(R.layout.view_nav_bar,this,false);
-        mTvTitle = (TextView) view.findViewById(R.id.tv_title);
+        mTvTitle = (TextView) view.findViewById(R.id.tv_header_title);
         mTvRightText = (TextView) view.findViewById(R.id.tv_right);
         mIvBack  = (ImageView) view.findViewById(R.id.iv_back);
         mIvRight = (ImageView) view.findViewById(R.id.iv_right);
@@ -89,12 +95,30 @@ public class NavBarHeader extends LinearLayout{
         addView(view);
     }
 
-    public void setHeaderTitle(String text){
+    public void setHeaderTitle(CharSequence text){
         mTvTitle.setText(text);
+    }
+
+    public void hideBackIcon(){
+        mIvBack.setVisibility(GONE);
+    }
+
+    public void hide(){
+        setVisibility(GONE);
     }
 
     public void setTitleColor(int color){
         mTvTitle.setTextColor(color);
+    }
+
+    public void setHeaderTitleListener(OnClickListener onClickListener){
+        mTvTitle.setOnClickListener(onClickListener);
+    }
+
+    public void setHeaderTitleRightDrawable(int resource){
+        Drawable rightDrawable = ContextCompat.getDrawable(mContext,resource);
+        rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());
+        mTvTitle.setCompoundDrawables(null,null,rightDrawable,null);
     }
 
     public void setRightText(String text){
@@ -113,23 +137,17 @@ public class NavBarHeader extends LinearLayout{
         mTvRightText.setTextColor(color);
     }
 
-    public void setBackIcon(int icon){
-        setBackIcon(icon,null);
+    public void setRightTextColorByResID(int resID){
+        mTvRightText.setTextColor(ContextCompat.getColor(mContext,resID));
     }
 
-    public void setBackIcon(int icon, OnClickListener onClickListener){
+    public void setBackIcon(int icon){
         mIvBack.setVisibility(icon == 0?GONE:VISIBLE);
         mIvBack.setImageResource(icon);
-        if(onClickListener == null){
-            mIvBack.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ActivityManager.getInstance().currentActivity().finish();
-                }
-            });
-        }else{
-            mIvBack.setOnClickListener(onClickListener);
-        }
+    }
+
+    public void setBackListener(OnClickListener listener){
+        mIvBack.setOnClickListener(listener);
     }
 
     public void setHeaderBackgroundColor(int color){
@@ -158,6 +176,14 @@ public class NavBarHeader extends LinearLayout{
 
     public void setCustomContent(View view){
         if(view != null){
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mFlContent.getLayoutParams();
+            if(mIvRight.getVisibility() == VISIBLE){
+                params.addRule(RelativeLayout.LEFT_OF,R.id.iv_right);
+            }else if(mTvRightText.getVisibility() == VISIBLE){
+                params.addRule(RelativeLayout.LEFT_OF,R.id.tv_right);
+            }
+            mFlContent.setLayoutParams(params);
+            mFlContent.setVisibility(VISIBLE);
             mFlContent.addView(view);
         }
     }

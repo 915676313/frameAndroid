@@ -3,15 +3,14 @@ package com.arlen.frame.common.net;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
-import com.arlen.frame.view.AppContext;
 import com.arlen.frame.BuildConfig;
-import com.arlen.frame.common.utils.OsUtils;
+import com.arlen.frame.common.db.shpref.TinyDB;
+import com.arlen.frame.common.activity.AppContext;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -33,17 +32,30 @@ public class HttpProvider {
     private static HttpProvider mInstance;
 
     public static String API_SERVER_ADDRESS = "https://api.thy360.com:443";
-    public static String DEBUG_SERVER_ADDRESS = "http://release.thy360.com:80";
+        public static String DEBUG_SERVER_ADDRESS = "http://172.16.0.206";
+//        public static String DEBUG_SERVER_ADDRESS = "http://docs-dev.thy360.com/mockjsdata/26/";
+//        public static String DEBUG_SERVER_ADDRESS = "http://devtest-pos.thy360.com";
+//    public static String DEBUG_SERVER_ADDRESS = "http://devnew-pos.thy360.com";
 
     private static Context mAppContext;
     public static int mVersionCode; // eg:17
     public static String mVersionName; // eg:4.1.0
-    public static String mImeI; // 设备号OsUtils
+    //    public static String mImeI; // 设备号OsUtils
+//    public static String token; //
+//    public static String storeNo; // 门店编号
 
     public static final int CONNECT_TIMEOUT = 5;
 
-    public  HttpProvider(){
+    static{
+        if(BuildConfig.DEBUG) {
+            String httpAddress = TinyDB.getInstance().getString("http");
+            if (!TextUtils.isEmpty(httpAddress)) {
+                DEBUG_SERVER_ADDRESS = httpAddress;
+            }
+        }
+    }
 
+    public HttpProvider() {
         getPackageInfo();
         initOkHttp();
     }
@@ -73,22 +85,23 @@ public class HttpProvider {
         // 获取版本信息
         final PackageManager packManager = mAppContext.getPackageManager();
         try {
-            PackageInfo pi = packManager
-                    .getPackageInfo(mAppContext.getPackageName(), 0);
+            PackageInfo pi = packManager.getPackageInfo(mAppContext.getPackageName(), 0);
             mVersionName = pi.versionName;
             mVersionCode = pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
         }
-        mImeI = OsUtils.getUniqueId(mAppContext);
+//        mImeI = OsUtils.getUniqueId(mAppContext);
+//        token = UserManager.getInstance().getToken();
+//        storeNo = UserManager.getInstance().getStoreNo();
     }
 
-
-    private static void wrapParamHeader(Request.Builder builder){
-        builder.addHeader("versionCode", mVersionCode+"");
-        builder.addHeader("mVersionCode", mVersionCode+"");
-        builder.addHeader("mImeI", mImeI+"");
+    private static void wrapParamHeader(Request.Builder builder) {
+        builder.addHeader("versionCode", mVersionCode + "");
+        builder.addHeader("mVersionCode", mVersionCode + "");
+//        builder.addHeader("mImeI", mImeI+"");
         builder.addHeader("system", "android");
-        builder.addHeader("token","85ed4bbd-1e25-4f1b-8087-63a08575e0c8");
+//        builder.addHeader("token", token);//"85ed4bbd-1e25-4f1b-8087-63a08575e0c8"
+//        builder.addHeader("storeNo", storeNo);//门店编号
     }
 
     public static String getHttpPointByStatus() {
@@ -98,7 +111,7 @@ public class HttpProvider {
     /**
      * 初始化okhttp配置
      */
-    private static void initOkHttp(){
+    private static void initOkHttp() {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         Interceptor headInterceptor = new Interceptor() {
@@ -116,15 +129,13 @@ public class HttpProvider {
         loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         okHttpBuilder.addInterceptor(loggingInterceptor);
 
-        if (!BuildConfig.DEBUG) {
-            try {
-                okHttpBuilder.sslSocketFactory(
-                        SSLSocketFactory.
-                                getSSLSocketFactory(mAppContext));
-            } catch (NoSuchAlgorithmException | KeyManagementException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!BuildConfig.DEBUG) {
+//            try {
+//                okHttpBuilder.sslSocketFactory( SSLSocketFactory.getSSLSocketFactory(mAppContext));
+//            } catch (NoSuchAlgorithmException | KeyManagementException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         //设置缓存
         File httpCacheDirectory = new File(mAppContext.getCacheDir(), "zzkgcache");
@@ -145,6 +156,7 @@ public class HttpProvider {
 
     /**
      * 获取service对象
+     *
      * @param service
      * @param <T>
      * @return
