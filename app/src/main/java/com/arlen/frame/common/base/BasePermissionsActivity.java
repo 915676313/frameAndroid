@@ -1,6 +1,5 @@
 package com.arlen.frame.common.base;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,37 +16,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Created by zhoujian on 2017/3/5.
- */
-
-public class BasePermissionsActivity extends Activity
-{
+public class BasePermissionsActivity extends BaseActivity{
 
 
     public static final String TAG = "BasePermissionsActivity";
 
-    public static  int REQUEST_CODE = 0;
+    public static int REQUEST_CODE = 0;
 
-    public void requestPermission(String[] permissions,int requestCode)
-    {
+    public void requestPermission(String[] permissions, int requestCode) {
 
         this.REQUEST_CODE = requestCode;
 
         //检查权限是否授权
-        if(checkPermissions(permissions))
-        {
+        if (checkPermissions(permissions)) {
             permissinSucceed(REQUEST_CODE);
-        }
-        else
-        {
+        } else {
             List<String> needPermissions = getPermissions(permissions);
             ActivityCompat.requestPermissions(this, needPermissions.toArray(new String[needPermissions.size()]), REQUEST_CODE);
         }
     }
 
-    private List<String> getPermissions(String[] permissions)
-    {
+    private List<String> getPermissions(String[] permissions) {
         List<String> permissionList = new ArrayList<>();
         for (String permission : permissions) {
             if (ContextCompat.checkSelfPermission(this, permission) !=
@@ -64,7 +53,6 @@ public class BasePermissionsActivity extends Activity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-
         if (requestCode == REQUEST_CODE) {
             if (verificationPermissions(grantResults)) {
                 permissinSucceed(REQUEST_CODE);
@@ -75,9 +63,7 @@ public class BasePermissionsActivity extends Activity
         }
     }
 
-    private boolean verificationPermissions(int[] results)
-    {
-
+    private boolean verificationPermissions(int[] results) {
         for (int result : results) {
             if (result != PackageManager.PERMISSION_GRANTED) {
                 return false;
@@ -93,18 +79,14 @@ public class BasePermissionsActivity extends Activity
      * @param permissions
      * @return
      */
-    private boolean checkPermissions(String[] permissions)
-    {
-        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M)
-        {
+    private boolean checkPermissions(String[] permissions) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
 
-        for(String permission:permissions)
-        {
+        for (String permission : permissions) {
 
-            if(ContextCompat.checkSelfPermission(BasePermissionsActivity.this,permission)!= PackageManager.PERMISSION_GRANTED)
-            {
+            if (ContextCompat.checkSelfPermission(BasePermissionsActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
@@ -112,8 +94,7 @@ public class BasePermissionsActivity extends Activity
     }
 
 
-    private void showFaiingDialog()
-    {
+    private void showFaiingDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("消息")
                 .setMessage("当前应用无此权限，该功能暂时无法使用。如若需要，请单击确定按钮进行权限授权！")
@@ -141,12 +122,10 @@ public class BasePermissionsActivity extends Activity
     }
 
     public void permissionFailing(int code) {
-
         Log.d(TAG, "获取权限失败=" + code);
     }
 
     public void permissinSucceed(int code) {
-
         Log.d(TAG, "获取权限成功=" + code);
     }
 }

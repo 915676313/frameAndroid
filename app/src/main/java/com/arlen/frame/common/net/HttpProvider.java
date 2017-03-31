@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.arlen.frame.BuildConfig;
-import com.arlen.frame.common.db.shpref.TinyDB;
 import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.db.shpref.TinyDB;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,6 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Arlen on 2016/12/21 15:03.
@@ -149,7 +148,8 @@ public class HttpProvider {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(getHttpPointByStatus())
                 .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonDConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }

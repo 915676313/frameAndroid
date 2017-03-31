@@ -12,4 +12,12 @@
         <attr name="isShowLine" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="ConvenientBanner">
+        <attr name="canLoop" format="boolean" />
+        <attr name="canTurn" format="boolean" />
+        <attr name="autoTurningTime" format="integer" />
+        <attr name="canShowRoundImage" format="boolean" />
+        <attr name="roundImageHeight" format="dimension" />
+    </declare-styleable>
+
 </resources>

@@ -40,6 +40,9 @@ public abstract class BasePresenter<T> implements IBasePresenter<T> {
             mView.clear();
             mView = null;
         }
+        if(mSubscription != null){
+            mSubscription.unsubscribe();
+        }
     }
 
     @Override
@@ -47,7 +50,6 @@ public abstract class BasePresenter<T> implements IBasePresenter<T> {
     }
 
     public Subscription setObservable(Observable observable, Subscriber subscriber) {
-        //取消了订阅, 同时也取消了http请求, RxJavaCallAdapterFactory帮我们给subscriber添加了call.cancel()'
         mSubscription = observable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
