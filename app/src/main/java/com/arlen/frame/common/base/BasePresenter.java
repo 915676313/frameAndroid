@@ -8,6 +8,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
 
 /**
@@ -16,11 +17,12 @@ import rx.schedulers.Schedulers;
 public abstract class BasePresenter<T> implements IBasePresenter<T> {
 
     public WeakReference<T> mView;
-    private Subscription mSubscription;
+    private SubscriptionList mSubscriptionList;
 
     @Override
     public void attach(T view) {
         this.mView = new WeakReference<T>(view);
+        mSubscriptionList = new SubscriptionList();
     }
 
     @Override
@@ -40,8 +42,8 @@ public abstract class BasePresenter<T> implements IBasePresenter<T> {
             mView.clear();
             mView = null;
         }
-        if(mSubscription != null){
-            mSubscription.unsubscribe();
+        if(mSubscriptionList != null && mSubscriptionList.hasSubscriptions()){
+            mSubscriptionList.unsubscribe();
         }
     }
 
@@ -49,12 +51,14 @@ public abstract class BasePresenter<T> implements IBasePresenter<T> {
     public void onResume() {
     }
 
-    public Subscription setObservable(Observable observable, Subscriber subscriber) {
-        mSubscription = observable
+    public void setObservable(Observable observable, Subscriber subscriber) {
+        Subscription subscription = observable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(subscriber);
-        return mSubscription;
+        if(mSubscriptionList != null){
+            mSubscriptionList.add(subscription);
+        }
     }
 
     public <V> V createService(final Class<V> service) {
