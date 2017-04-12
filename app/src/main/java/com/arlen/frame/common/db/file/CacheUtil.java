@@ -14,12 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-/**
- * 首页门店和商家详情页顶部的广告数据的缓存类 Map<String, AdGroup>
- * 现在的缓存时间是一个小时,增加功能还可以是根据当前网络状态进行缓存时间的动态改变
- *
- *
- */
 public class CacheUtil {
 
 	private static final String TAG = "CacheUtil";

@@ -31,7 +31,7 @@ public class HttpProvider {
     private static HttpProvider mInstance;
 
     public static String API_SERVER_ADDRESS = "https://api.thy360.com:443";
-        public static String DEBUG_SERVER_ADDRESS = "http://172.16.0.206";
+    public static String DEBUG_SERVER_ADDRESS = "http://172.16.0.206";
 //        public static String DEBUG_SERVER_ADDRESS = "http://docs-dev.thy360.com/mockjsdata/26/";
 //        public static String DEBUG_SERVER_ADDRESS = "http://devtest-pos.thy360.com";
 //    public static String DEBUG_SERVER_ADDRESS = "http://devnew-pos.thy360.com";
@@ -45,8 +45,8 @@ public class HttpProvider {
 
     public static final int CONNECT_TIMEOUT = 5;
 
-    static{
-        if(BuildConfig.DEBUG) {
+    static {
+        if (BuildConfig.DEBUG) {
             String httpAddress = TinyDB.getInstance().getString("http");
             if (!TextUtils.isEmpty(httpAddress)) {
                 DEBUG_SERVER_ADDRESS = httpAddress;
