@@ -3,7 +3,6 @@ package com.arlen.frame.common.view;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+
 import com.arlen.frame.R;
 import com.arlen.frame.common.utils.FileSizeUtil;
 import com.arlen.frame.common.utils.ToastUtils;
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -131,11 +132,21 @@ public class PhotoSelectDialog extends Dialog implements View.OnClickListener {
         String SDState = Environment.getExternalStorageState();
         if (SDState.equals(Environment.MEDIA_MOUNTED)) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// "android.media.action.IMAGE_CAPTURE"
-            ContentValues values = new ContentValues();
-            SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+//            ContentValues values = new ContentValues();
+            SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CHINA);
             String filename = timeStampFormat.format(new Date());
-            values.put(MediaStore.Video.Media.TITLE, filename);
-            mPhotoUri = mActivity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//            values.put(MediaStore.Video.Media.TITLE, filename);
+//            mPhotoUri = mActivity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            File outputImage = new File(Environment.getExternalStorageDirectory(), filename+".jpg");
+            try {
+                if (outputImage.exists()) {
+                    outputImage.delete();
+                }
+                outputImage.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mPhotoUri = Uri.fromFile(outputImage);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
             /** ----------------- */
             mActivity.startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
@@ -149,7 +160,6 @@ public class PhotoSelectDialog extends Dialog implements View.OnClickListener {
      */
     private void pickPhoto() {
         File outputImage = new File(Environment.getExternalStorageDirectory(), "output_image.jpg");
-        mImageUri = Uri.fromFile(outputImage);
         try {
             if (outputImage.exists()) {
                 outputImage.delete();
@@ -158,6 +168,7 @@ public class PhotoSelectDialog extends Dialog implements View.OnClickListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mImageUri = Uri.fromFile(outputImage);
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
@@ -189,7 +200,7 @@ public class PhotoSelectDialog extends Dialog implements View.OnClickListener {
 
     public void doPhoto(int requestCode, int resultCode, Intent data) {
         if (requestCode == SELECT_PIC_BY_PICK_PHOTO) {
-            if (resultCode == mActivity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 if (data == null) {
                     ToastUtils.toastShort("选择图片文件出错");
                     return;
@@ -208,7 +219,7 @@ public class PhotoSelectDialog extends Dialog implements View.OnClickListener {
                 }
             }
         } else if (requestCode == SELECT_PIC_BY_TACK_PHOTO) {
-            if (resultCode == mActivity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 if (mListener != null) {
                     mListener.cropResult(mPhotoUri);
                 }
@@ -218,20 +229,20 @@ public class PhotoSelectDialog extends Dialog implements View.OnClickListener {
 
     public void doPermissionResult(int requestCode, int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_PICK_PHONE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length >0 &&grantResults[0]==PackageManager.PERMISSION_GRANTED) {
                 pickPhoto();
             } else {
                 // Permission Denied
-                ToastUtils.toastShort("Permission Denied");
+                ToastUtils.toastShort("请在设置中开启存储权限");
             }
         }
 
         if (requestCode == MY_PERMISSIONS_REQUEST_TAKE_PHONE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length >0 &&grantResults[0]==PackageManager.PERMISSION_GRANTED) {
                 takePhoto();
             } else {
                 // Permission Denied
-                ToastUtils.toastShort("Permission Denied");
+                ToastUtils.toastShort("请在设置中开启拍照权限");
             }
         }
     }

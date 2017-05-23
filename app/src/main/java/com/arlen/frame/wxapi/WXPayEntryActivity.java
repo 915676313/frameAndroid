@@ -1,4 +1,4 @@
-package com.arlen.frame.common.activity.wxapi;
+package com.arlen.frame.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -3,7 +3,7 @@ package com.arlen.frame.common.db.file;
 import android.content.Context;
 import android.os.Environment;
 
-import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.AppContext;
 
 import java.io.File;
 import java.io.FileInputStream;

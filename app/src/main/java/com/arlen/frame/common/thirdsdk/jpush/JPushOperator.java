@@ -2,7 +2,7 @@ package com.arlen.frame.common.thirdsdk.jpush;
 
 import android.content.Context;
 
-import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.AppContext;
 
 import java.util.HashSet;
 import java.util.Set;

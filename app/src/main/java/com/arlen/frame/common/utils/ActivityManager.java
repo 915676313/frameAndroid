@@ -1,4 +1,4 @@
-package com.arlen.frame.common.activity;
+package com.arlen.frame.common.utils;
 
 import android.app.Activity;
 

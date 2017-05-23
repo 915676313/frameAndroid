@@ -12,6 +12,7 @@ JNIEXPORT jstring JNICALL Java_com_arlen_frame_common_utils_JniUtils_getStringFo
         (JNIEnv *env, jobject obj){
     return (*env)->NewStringUTF(env,"这里是来自c的string");
 }
+
 const char keyValue[] = {
         21, 25, 21, -45, 25, 98, -55, -45, 10, 35, -45, 35,
         26, -5, 25, -65, -78, -99, 85, 45, -5, 10, -0, 11,

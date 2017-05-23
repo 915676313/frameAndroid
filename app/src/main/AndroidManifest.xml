@@ -80,7 +80,7 @@
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
 
     <application
-        android:name=".common.activity.AppContext"
+        android:name=".common.AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -129,7 +129,7 @@
 
         <!-- 微信支付平台使用 -->
         <activity
-            android:name=".common.activity.wxapi.WXPayEntryActivity"
+            android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

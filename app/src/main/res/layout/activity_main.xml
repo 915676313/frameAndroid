@@ -3,8 +3,9 @@
     xmlns:nav="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="暂无优惠券"
-    android:orientation="vertical">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:tag="暂无优惠券">
 
     <ImageView
         android:id="@+id/iv_image"
@@ -15,9 +16,60 @@
         android:id="@+id/tv_jni"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
         android:textColor="@color/cl_3f"
-        android:layout_gravity="center" />
+        android:textSize="18sp" />
 
+    <Button
+        android:id="@+id/btn_load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
+        android:text="LOAD PATCH" />
 
+    <Button
+        android:id="@+id/btn_library"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
+        android:text="LOAD LIBRARY" />
+
+    <Button
+        android:id="@+id/btn_clean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
+        android:text="CLEAN PATCH" />
+
+    <Button
+        android:id="@+id/btn_kill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
+        android:text="KILL SELF" />
+
+    <Button
+        android:id="@+id/btn_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
+        android:text="SHOW INFO" />
+
+    <TextView
+        android:id="@+id/tv_debug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="阿斯蒂芬金坷垃撒娇的反馈了撒娇的反馈了撒旦法金坷垃数据库类" />
+
+    <Button
+        android:id="@+id/btn_debug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onClick"
+        android:text="出现bug" />
 </LinearLayout>

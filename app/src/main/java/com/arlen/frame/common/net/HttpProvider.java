@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.arlen.frame.BuildConfig;
-import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.AppContext;
 import com.arlen.frame.common.db.shpref.TinyDB;
 
 import java.io.File;
@@ -30,11 +30,8 @@ public class HttpProvider {
     private static Retrofit mRetrofit;
     private static HttpProvider mInstance;
 
-    public static String API_SERVER_ADDRESS = "https://api.thy360.com:443";
-    public static String DEBUG_SERVER_ADDRESS = "http://172.16.0.206";
-//        public static String DEBUG_SERVER_ADDRESS = "http://docs-dev.thy360.com/mockjsdata/26/";
-//        public static String DEBUG_SERVER_ADDRESS = "http://devtest-pos.thy360.com";
-//    public static String DEBUG_SERVER_ADDRESS = "http://devnew-pos.thy360.com";
+    public static String API_SERVER_ADDRESS = "https://192.168.0.1";
+    public static String DEBUG_SERVER_ADDRESS = "http://192.168.0.1";
 
     private static Context mAppContext;
     public static int mVersionCode; // eg:17

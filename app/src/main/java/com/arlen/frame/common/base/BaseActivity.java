@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Arlen on 2017/1/10.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements IEmptyTypeView {
 
     private NavBarHeader mNavBarHeader;
     private StatusLayout mStatusLayout;
@@ -149,4 +149,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    public void setEmptyType(EmptyType emptyType){
+        if(mStatusLayout != null){
+            mStatusLayout.setTipsText(StatusLayout.LAYER_EMPTY,emptyType.getContentRes());
+            mStatusLayout.setTipsIcon(StatusLayout.LAYER_EMPTY,emptyType.getImgResId());
+        }
+    }
+
+    @Override
+    public EmptyType getEmptyType() {
+        return EmptyType.NONE;
+    }
 }

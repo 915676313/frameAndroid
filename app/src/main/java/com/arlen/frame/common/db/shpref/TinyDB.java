@@ -9,7 +9,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.AppContext;
 
 import java.io.File;
 import java.util.ArrayList;

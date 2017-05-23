@@ -1,16 +1,18 @@
 package com.arlen.frame.common.net;
 
 import com.arlen.frame.R;
-import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.AppContext;
 import com.arlen.frame.common.base.IBaseView;
 import com.arlen.frame.common.model.BaseResult;
 import com.arlen.frame.common.utils.NetUtils;
 import com.arlen.frame.common.utils.ToastUtils;
 import com.google.gson.JsonSyntaxException;
 
+import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -22,21 +24,24 @@ import retrofit2.adapter.rxjava.HttpException;
 public class BasePresenterSubscriber<T extends BaseResult> extends BaseSubscriberAbstract<T> {
 
     private boolean isContent;
-    private IBaseView baseView;
+    private WeakReference<IBaseView> baseView;
+
+    public BasePresenterSubscriber() {
+    }
 
     public BasePresenterSubscriber(IBaseView baseView) {
-        this.baseView = baseView;
+        this.baseView = new WeakReference<>(baseView);
     }
 
     public BasePresenterSubscriber(IBaseView baseView, boolean isContent) {
-        this.baseView = baseView;
+        this.baseView = new WeakReference<>(baseView);
         this.isContent = isContent;
     }
 
     @Override
     public void onStart() {//加载数据前
         if (baseView != null) {
-            baseView.showLoadingView(isContent);
+            baseView.get().showLoadingView(isContent);
         }
     }
 
@@ -57,19 +62,29 @@ public class BasePresenterSubscriber<T extends BaseResult> extends BaseSubscribe
                 ToastUtils.toastShort(AppContext.getAppContext().getString(R.string.custom_time_out) + e.getMessage());
             }
             if (baseView != null) {
-                baseView.showDataView();
+                baseView.get().showDataView();
             }
         } else {
             if (baseView != null) {
-                baseView.showErrorView();
+                baseView.get().showErrorView();
             }
         }
     }
 
     @Override
     public void handleSuccess(T result) {
-        if (baseView != null) {
-            baseView.showDataView();
+        if(isContent) {
+            baseView.get().showDataView();
+        }else{
+            if(result.data instanceof List){
+                if(result.data != null && ((List) result.data).size()>0){
+                    baseView.get().showDataView();
+                }else{
+                    baseView.get().showEmptyView();
+                }
+            }else{
+                baseView.get().showDataView();
+            }
         }
     }
 
@@ -78,11 +93,11 @@ public class BasePresenterSubscriber<T extends BaseResult> extends BaseSubscribe
         if (isContent) {
             ToastUtils.toastShort(result.msg);
             if (baseView != null) {
-                baseView.showDataView();
+                baseView.get().showDataView();
             }
         } else {
             if (baseView != null) {
-                baseView.showEmptyView();
+                baseView.get().showEmptyView();
             }
         }
     }

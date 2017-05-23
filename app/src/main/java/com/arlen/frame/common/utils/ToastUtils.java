@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.arlen.frame.common.activity.AppContext;
+import com.arlen.frame.common.AppContext;
 
 
 /**

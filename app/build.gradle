@@ -1,7 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.tencent.tinker.patch'
+apply from: 'tinkerpatch.gradle'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 23
     buildToolsVersion "25.0.0"
 
     defaultConfig {
@@ -17,6 +20,7 @@ android {
             stl "gnustl_shared" //c++编译库 源码路径
             cFlags "-ID://ProgramFiles/Android/android_sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include"//编译选项
         }
+        multiDexEnabled true
     }
     signingConfigs {
         release {
@@ -52,11 +56,13 @@ dependencies {
 
     compile project(':ShareSdk-lib')
 
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    //Rx.java
     compile 'io.reactivex:rxjava:x.y.z'
     compile 'io.reactivex:rxandroid:1.0.1'
+    //Retrofit 2.0
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
@@ -67,5 +73,14 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     //图片加载库
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    //下拉刷新
     compile 'in.srain.cube:ultra-ptr:1.0.11'
+    //Tinker
+    //无需引入tinker的任何库,使用tinkerpatch sdk即可
+    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:${TINKERPATCH_VERSION}") { changing = true }
+    compile "com.android.support:multidex:1.0.1"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

@@ -1,16 +1,20 @@
 package com.arlen.frame.common.net;
 
+import android.support.annotation.NonNull;
+
 import com.arlen.frame.R;
+import com.arlen.frame.common.AppContext;
 import com.arlen.frame.common.model.BaseResult;
 import com.arlen.frame.common.utils.NetUtils;
 import com.arlen.frame.common.utils.ToastUtils;
 import com.arlen.frame.common.view.StatusLayout;
-import com.arlen.frame.common.activity.AppContext;
 import com.google.gson.JsonSyntaxException;
 
+import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -34,29 +38,29 @@ public class BaseSubscriber<T extends BaseResult> extends BaseSubscriberAbstract
      */
     public static final int STYLE_CONTENT_LOADING = 2;
 
-    private StatusLayout statusLayout;
+    private WeakReference<StatusLayout> statusLayout;
     private int style = STYLE_NO;
 
-    public BaseSubscriber(StatusLayout statusLayout) {
-        this.statusLayout = statusLayout;
+    public BaseSubscriber(@NonNull StatusLayout statusLayout) {
+        this.statusLayout = new WeakReference<>(statusLayout);
     }
 
-    public BaseSubscriber(StatusLayout statusLayout, boolean isContent) {
-        this.statusLayout = statusLayout;
+    public BaseSubscriber(@NonNull StatusLayout statusLayout, boolean isContent) {
+        this.statusLayout = new WeakReference<>(statusLayout);
         style = isContent?STYLE_CONTENT_LOADING:STYLE_LOADING;
     }
 
     public boolean isContent() {//是否是内容
-        return statusLayout.getLayer() == StatusLayout.LAYER_CONTENT
-                || statusLayout.getLayer() == StatusLayout.LAYER_CONTENT_LOADING;
+        return statusLayout.get().getLayer() == StatusLayout.LAYER_CONTENT
+                || statusLayout.get().getLayer() == StatusLayout.LAYER_CONTENT_LOADING;
     }
 
     @Override
     public void onStart() {//加载数据前
         if (style == STYLE_LOADING) {
-            statusLayout.setViewLayer(StatusLayout.LAYER_LOADING);
+            statusLayout.get().setViewLayer(StatusLayout.LAYER_LOADING);
         } else if (style == STYLE_CONTENT_LOADING) {
-            statusLayout.setViewLayer(StatusLayout.LAYER_CONTENT_LOADING);
+            statusLayout.get().setViewLayer(StatusLayout.LAYER_CONTENT_LOADING);
         }
     }
 
@@ -76,34 +80,46 @@ public class BaseSubscriber<T extends BaseResult> extends BaseSubscriberAbstract
             } else {
                 ToastUtils.toastShort(AppContext.getAppContext().getString(R.string.custom_time_out) + e.getMessage());
             }
-            statusLayout.setViewLayer(StatusLayout.LAYER_CONTENT);
+            statusLayout.get().setViewLayer(StatusLayout.LAYER_CONTENT);
         } else {
             if (e instanceof ConnectException || !NetUtils.isConnected(AppContext.getAppContext())) {//网络连接异常
-                statusLayout.setViewLayer(StatusLayout.LAYER_NO_NETWORK);
+                statusLayout.get().setViewLayer(StatusLayout.LAYER_NO_NETWORK);
             } else if (e instanceof SocketTimeoutException) {
-                statusLayout.setViewLayer(StatusLayout.LAYER_NETWORK_ERROR);
+                statusLayout.get().setViewLayer(StatusLayout.LAYER_NETWORK_ERROR);
             } else if (e instanceof HttpException || e instanceof UnknownHostException) {
-                statusLayout.setViewLayer(StatusLayout.LAYER_NETWORK_ERROR);
+                statusLayout.get().setViewLayer(StatusLayout.LAYER_NETWORK_ERROR);
             } else if (e instanceof JsonSyntaxException) {
-                statusLayout.setViewLayer(StatusLayout.LAYER_OTHER_NETWORK);
+                statusLayout.get().setViewLayer(StatusLayout.LAYER_OTHER_NETWORK);
             } else {
-                statusLayout.setViewLayer(StatusLayout.LAYER_OTHER_NETWORK);
+                statusLayout.get().setViewLayer(StatusLayout.LAYER_OTHER_NETWORK);
             }
         }
     }
 
     @Override
     public void handleSuccess(T result) {
-        statusLayout.setViewLayer(StatusLayout.LAYER_CONTENT);
+        if(isContent()) {
+            statusLayout.get().setViewLayer(StatusLayout.LAYER_CONTENT);
+        }else{
+            if(result.data instanceof List){
+                if(result.data != null && ((List) result.data).size()>0){
+                    statusLayout.get().setViewLayer(StatusLayout.LAYER_CONTENT);
+                }else{
+                    statusLayout.get().setViewLayer(StatusLayout.LAYER_EMPTY);
+                }
+            }else{
+                statusLayout.get().setViewLayer(StatusLayout.LAYER_CONTENT);
+            }
+        }
     }
 
     @Override
     public void handleFail(T result) {
         if (isContent()) {
             ToastUtils.toastShort(result.msg);
-            statusLayout.setViewLayer(StatusLayout.LAYER_CONTENT);
+            statusLayout.get().setViewLayer(StatusLayout.LAYER_CONTENT);
         } else {
-            statusLayout.setViewLayer(StatusLayout.LAYER_OTHER_NETWORK);
+            statusLayout.get().setViewLayer(StatusLayout.LAYER_OTHER_NETWORK);
         }
     }
 
