@@ -59,6 +59,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IEmptyTy
         ButterKnife.bind(this);
     }
 
+    public void setCommonContentView(@LayoutRes int contentLayout) {
+        super.setContentView(contentLayout);
+        ButterKnife.bind(this);
+    }
+
     public void setNoHeaderContentView(@LayoutRes int contentLayout) {
         mBaseView = View.inflate(this, R.layout.base_view_activity, null);
         mStatusLayout = (StatusLayout) mBaseView.findViewById(R.id.sl_base);

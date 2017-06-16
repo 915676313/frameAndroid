@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">frameAndroid</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+<string name="app_name">frameAndroid</string>
     <string name="quit_app_text">再按一次退出程序</string>
     <string name="no_more">没有更多</string>
     <string name="from_photo">从相册选择</string>

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply plugin: 'com.tencent.tinker.patch'
 apply from: 'tinkerpatch.gradle'
 
@@ -9,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.arlen.frame"
-        minSdkVersion 17
+        minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -56,7 +55,6 @@ dependencies {
 
     compile project(':ShareSdk-lib')
 
-    compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
     //Rx.java
@@ -79,7 +77,6 @@ dependencies {
     //无需引入tinker的任何库,使用tinkerpatch sdk即可
     compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:${TINKERPATCH_VERSION}") { changing = true }
     compile "com.android.support:multidex:1.0.1"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 repositories {
     mavenCentral()

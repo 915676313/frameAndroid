@@ -179,7 +179,6 @@ public class RequestLocalClient {
 		if (gps || network) {
 			return true;
 		}
-
 		return false;
 	}
 

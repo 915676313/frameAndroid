@@ -77,6 +77,18 @@ public class ActivityManager {
         mActivityStack.add(weakReference);
     }
 
+    public boolean hasActivity(Class<?> zclass){
+        boolean isExist = false;
+        if(mActivityStack != null) {
+            for (WeakReference<Activity> activity:mActivityStack){
+                if(activity.get().getClass().getSimpleName().equals(zclass.getSimpleName())){
+                    isExist = true;
+                }
+            }
+        }
+        return isExist;
+    }
+
     public void clearAllActivity() {
         if (mActivityStack != null) {
             mActivityStack.clear();
