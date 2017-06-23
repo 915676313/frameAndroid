@@ -208,11 +208,11 @@ public class UploadImgOperation<T> {
         }
     }
 
-    public Subscription setObservable(Observable observable, Subscription callback) {
+    public Subscription setObservable(Observable observable, BasePresenterSubscriber callback) {
         return observable
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new BasePresenterSubscriber());
+                .subscribe(callback);
     }
 
     public boolean isLoading() {

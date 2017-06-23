@@ -1,0 +1,21 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--有圆角-->
+
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="5dp" />
+            <stroke android:width="0.5dp" android:color="@color/cl_ff" />
+        </shape>
+    </item>
+
+    <!--&lt;!&ndash;点击&ndash;&gt;-->
+    <!--<item android:state_enabled="true">-->
+        <!--<shape android:shape="rectangle">-->
+            <!--<solid android:color="@color/cl_ff" />-->
+            <!--<corners android:radius="4dp" />-->
+            <!--<stroke android:width="1dp" android:color="@color/cl_64" />-->
+        <!--</shape>-->
+    <!--</item>-->
+</selector>

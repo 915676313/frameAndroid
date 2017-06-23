@@ -19,5 +19,20 @@
         <attr name="canShowRoundImage" format="boolean" />
         <attr name="roundImageHeight" format="dimension" />
     </declare-styleable>
-
+    <declare-styleable name="SlideDetailsLayout">
+        <!-- float value for indicate the moment of switch panel-->
+        <attr name="percent" format="float" />
+        <!-- how long the animation keep-->
+        <attr name="duration" format="integer" />
+        <!-- default panel to show after init-->
+        <attr name="default_panel" format="enum">
+            <enum name="front" value="0" />
+            <enum name="behind" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="FlowLayout">
+        <attr name="VerticalSpacing" format="dimension" />
+        <attr name="HorizontalSpacing" format="dimension" />
+        <attr name="isAnimation" format="boolean"></attr>
+    </declare-styleable>
 </resources>
